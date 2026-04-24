@@ -1,15 +1,5 @@
 import { ShoppingCart, CheckCircle } from 'lucide-react'
-import type { ThemePackage } from './ThemeCard'
-
-interface ResultData {
-  theme: ThemePackage
-  quantity: number
-  premiumSupport: boolean
-  prioritySetup: boolean
-  subtotal: number
-  tax: number
-  total: number
-}
+import type { ResultData } from '../types'
 
 interface ResultCardProps {
   result: ResultData
