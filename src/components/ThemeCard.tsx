@@ -1,10 +1,4 @@
-export interface ThemePackage {
-  id: string
-  name: string
-  description: string
-  price: number
-  emoji: string
-}
+import type { ThemePackage } from '../types'
 
 interface ThemeCardProps {
   theme: ThemePackage

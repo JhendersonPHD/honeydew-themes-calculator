@@ -1,21 +1,13 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import ThemeSelector from './components/ThemeSelector'
 import Calculator from './components/Calculator'
-import ResultCard, { TAX_RATE } from './components/ResultCard'
 import Footer from './components/Footer'
-import type { ThemePackage } from './components/ThemeCard'
+import type { ThemePackage, ResultData } from './types'
+import { TAX_RATE } from './hooks/useCalculator'
 
-interface ResultData {
-  theme: ThemePackage
-  quantity: number
-  premiumSupport: boolean
-  prioritySetup: boolean
-  subtotal: number
-  tax: number
-  total: number
-}
+const ResultCard = lazy(() => import('./components/ResultCard'))
 
 export default function App() {
   const [selectedTheme, setSelectedTheme] = useState<ThemePackage | null>(null)
@@ -71,7 +63,11 @@ export default function App() {
           disabled={!selectedTheme}
         />
 
-        {result && <ResultCard result={result} />}
+        {result && (
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>}>
+            <ResultCard result={result} />
+          </Suspense>
+        )}
       </main>
       <Footer />
     </div>
