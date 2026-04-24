@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A012"/>
+      <stop offset="100%" style="stop-color:#F5C842"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFBF0"/>
+      <stop offset="100%" style="stop-color:#FFF8E7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGrad)" stroke="#E8D5A3" stroke-width="4"/>
+
+  <!-- Honeycomb hexagon pattern - center hex is larger -->
+  <!-- Center hex -->
+  <path d="M256 170 L305 200 L305 255 L256 285 L207 255 L207 200 Z" fill="url(#goldGrad)" stroke="#3D2914" stroke-width="2"/>
+  <path d="M256 185 L290 207 L290 248 L256 270 L222 248 L222 207 Z" fill="#FFFBF0" opacity="0.3"/>
+
+  <!-- Top-left hex -->
+  <path d="M207 120 L256 150 L256 205 L207 235 L158 205 L158 150 Z" fill="url(#goldGrad)" stroke="#3D2914" stroke-width="2" opacity="0.85"/>
+  <path d="M207 135 L241 157 L241 198 L207 220 L173 198 L173 157 Z" fill="#FFFBF0" opacity="0.25"/>
+
+  <!-- Top-right hex -->
+  <path d="M305 120 L354 150 L354 205 L305 235 L256 205 L256 150 Z" fill="url(#goldGrad)" stroke="#3D2914" stroke-width="2" opacity="0.85"/>
+  <path d="M305 135 L339 157 L339 198 L305 220 L271 198 L271 157 Z" fill="#FFFBF0" opacity="0.25"/>
+
+  <!-- Bottom-left hex -->
+  <path d="M207 290 L256 320 L256 375 L207 405 L158 375 L158 320 Z" fill="url(#goldGrad)" stroke="#3D2914" stroke-width="2" opacity="0.85"/>
+  <path d="M207 305 L241 327 L241 368 L207 390 L173 368 L173 327 Z" fill="#FFFBF0" opacity="0.25"/>
+
+  <!-- Bottom-right hex -->
+  <path d="M305 290 L354 320 L354 375 L305 405 L256 375 L256 320 Z" fill="url(#goldGrad)" stroke="#3D2914" stroke-width="2" opacity="0.85"/>
+  <path d="M305 305 L339 327 L339 368 L305 390 L271 368 L271 327 Z" fill="#FFFBF0" opacity="0.25"/>
+
+  <!-- Small decorative hexes -->
+  <path d="M150 175 L175 192 L175 225 L150 242 L125 225 L125 192 Z" fill="url(#goldGrad)" opacity="0.5"/>
+  <path d="M362 175 L387 192 L387 225 L362 242 L337 225 L337 192 Z" fill="url(#goldGrad)" opacity="0.5"/>
+  <path d="M150 290 L175 307 L175 340 L150 357 L125 340 L125 307 Z" fill="url(#goldGrad)" opacity="0.5"/>
+  <path d="M362 290 L387 307 L387 340 L362 357 L337 340 L337 307 Z" fill="url(#goldGrad)" opacity="0.5"/>
+
+  <!-- Bee in center -->
+  <ellipse cx="256" cy="227" rx="18" ry="12" fill="#3D2914"/>
+  <rect x="242" y="220" width="28" height="4" rx="2" fill="#D4A012"/>
+  <rect x="242" y="230" width="28" height="4" rx="2" fill="#D4A012"/>
+  <circle cx="248" cy="224" r="2.5" fill="#3D2914"/>
+  <circle cx="264" cy="224" r="2.5" fill="#3D2914"/>
+
+  <!-- Wings -->
+  <ellipse cx="238" cy="218" rx="12" ry="8" fill="#FFF8E7" stroke="#E8D5A3" stroke-width="1.5" opacity="0.8"/>
+  <ellipse cx="274" cy="218" rx="12" ry="8" fill="#FFF8E7" stroke="#E8D5A3" stroke-width="1.5" opacity="0.8"/>
+
+  <!-- Sparkles -->
+  <circle cx="380" cy="140" r="4" fill="#F5C842" opacity="0.6"/>
+  <circle cx="130" cy="380" r="3" fill="#F5C842" opacity="0.5"/>
+  <circle cx="395" cy="370" r="5" fill="#F5C842" opacity="0.4"/>
+</svg>
