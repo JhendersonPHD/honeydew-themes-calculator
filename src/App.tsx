@@ -4,20 +4,39 @@ import Hero from './components/Hero'
 import ThemeSelector from './components/ThemeSelector'
 import Calculator from './components/Calculator'
 import Footer from './components/Footer'
+import ErrorBoundary from './components/ErrorBoundary'
+import ThemeHelper from './components/ThemeHelper'
 import type { ThemePackage, ResultData } from './types'
 import { TAX_RATE } from './hooks/useCalculator'
+import { validateQuantity } from './utils/validation'
 
 const ResultCard = lazy(() => import('./components/ResultCard'))
 
 export default function App() {
   const [selectedTheme, setSelectedTheme] = useState<ThemePackage | null>(null)
   const [quantity, setQuantity] = useState(1)
+  const [quantityError, setQuantityError] = useState<string | null>(null)
   const [premiumSupport, setPremiumSupport] = useState(false)
   const [prioritySetup, setPrioritySetup] = useState(false)
   const [result, setResult] = useState<ResultData | null>(null)
 
+  function handleQuantityChange(q: number) {
+    setQuantity(q)
+    setResult(null)
+    // Validate and show error inline
+    const validation = validateQuantity(q)
+    setQuantityError(validation.valid ? null : validation.error || null)
+  }
+
   function handleCalculate() {
     if (!selectedTheme) return
+
+    // Final validation before calculation
+    const qValidation = validateQuantity(quantity)
+    if (!qValidation.valid) {
+      setQuantityError(qValidation.error || 'Invalid quantity')
+      return
+    }
 
     const themeCost = selectedTheme.price * quantity
     const addOnCost = (premiumSupport ? 9.99 : 0) + (prioritySetup ? 19.99 : 0)
@@ -43,8 +62,17 @@ export default function App() {
 
   return (
     <div className="app">
+      <a href="#main-content" style={{
+        position: 'absolute',
+        left: '-9999px',
+        top: 'auto',
+        width: '1px',
+        height: '1px',
+        overflow: 'hidden'
+      }}>Skip to main content</a>
+      
       <Header />
-      <main className="main-content">
+      <main id="main-content" className="main-content">
         <Hero />
 
         <ThemeSelector
@@ -54,7 +82,8 @@ export default function App() {
 
         <Calculator
           quantity={quantity}
-          onQuantityChange={q => { setQuantity(q); setResult(null) }}
+          onQuantityChange={handleQuantityChange}
+          quantityError={quantityError}
           premiumSupport={premiumSupport}
           onPremiumSupportChange={v => { setPremiumSupport(v); setResult(null) }}
           prioritySetup={prioritySetup}
@@ -65,11 +94,14 @@ export default function App() {
 
         {result && (
           <Suspense fallback={<div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>}>
-            <ResultCard result={result} />
+            <ErrorBoundary fallbackMessage="The order summary could not be displayed. Your calculation was successful — please refresh to see results.">
+              <ResultCard result={result} />
+            </ErrorBoundary>
           </Suspense>
         )}
       </main>
       <Footer />
+      <ThemeHelper />
     </div>
   )
 }

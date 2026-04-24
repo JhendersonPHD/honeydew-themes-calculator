@@ -1,8 +1,10 @@
-import { Calculator as CalcIcon } from 'lucide-react'
+import { Calculator as CalcIcon, Mic, MicOff } from 'lucide-react'
+import { useVoiceInput, parseSpokenNumber } from '../hooks/useVoiceInput'
 
 interface CalculatorProps {
   quantity: number
   onQuantityChange: (q: number) => void
+  quantityError?: string | null
   premiumSupport: boolean
   onPremiumSupportChange: (v: boolean) => void
   prioritySetup: boolean
@@ -14,6 +16,7 @@ interface CalculatorProps {
 export default function Calculator({
   quantity,
   onQuantityChange,
+  quantityError,
   premiumSupport,
   onPremiumSupportChange,
   prioritySetup,
@@ -21,6 +24,22 @@ export default function Calculator({
   onCalculate,
   disabled
 }: CalculatorProps) {
+  const voice = useVoiceInput()
+
+  function handleVoiceResult() {
+    if (voice.transcript) {
+      const num = parseSpokenNumber(voice.transcript)
+      if (num !== null && num >= 1 && num <= 99) {
+        onQuantityChange(num)
+      }
+    }
+  }
+
+  // When transcript changes, apply it
+  if (voice.transcript) {
+    handleVoiceResult()
+  }
+
   return (
     <section style={{
       background: 'var(--color-warm-cream)',
@@ -58,28 +77,79 @@ export default function Calculator({
           >
             Quantity
           </label>
-          <input
-            id="quantity"
-            type="number"
-            min={1}
-            max={100}
-            value={quantity}
-            onChange={e => onQuantityChange(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))}
-            style={{
-              width: '120px',
-              padding: '0.625rem 0.875rem',
-              border: '2px solid var(--color-pale-honey)',
-              borderRadius: '8px',
-              fontSize: '1rem',
-              fontFamily: 'var(--font-sans)',
-              background: 'white',
-              color: 'var(--color-espresso)',
-              outline: 'none',
-              transition: 'border-color 200ms ease-out'
-            }}
-            onFocus={e => (e.target.style.borderColor = 'var(--color-honey-gold)')}
-            onBlur={e => (e.target.style.borderColor = 'var(--color-pale-honey)')}
-          />
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+            <input
+              id="quantity"
+              type="number"
+              min={1}
+              max={99}
+              value={quantity}
+              onChange={e => {
+                const val = parseInt(e.target.value, 10)
+                if (!isNaN(val)) onQuantityChange(val)
+              }}
+              aria-invalid={!!quantityError}
+              aria-describedby={quantityError ? 'quantity-error' : undefined}
+              style={{
+                width: '120px',
+                padding: '0.625rem 0.875rem',
+                border: `2px solid ${quantityError ? '#e53e3e' : 'var(--color-pale-honey)'}`,
+                borderRadius: '8px',
+                fontSize: '1rem',
+                fontFamily: 'var(--font-sans)',
+                background: 'white',
+                color: 'var(--color-espresso)',
+                outline: 'none',
+                transition: 'border-color 200ms ease-out'
+              }}
+              onFocus={e => (e.target.style.borderColor = quantityError ? '#e53e3e' : 'var(--color-honey-gold)')}
+              onBlur={e => (e.target.style.borderColor = quantityError ? '#e53e3e' : 'var(--color-pale-honey)')}
+            />
+            {/* Voice Input Button */}
+            {voice.isSupported && (
+              <button
+                type="button"
+                onClick={voice.toggleListening}
+                aria-label={voice.isListening ? 'Stop voice input' : 'Start voice input'}
+                title={voice.isListening ? 'Listening...' : 'Speak quantity'}
+                style={{
+                  padding: '0.625rem',
+                  background: voice.isListening ? '#F5A623' : 'var(--color-pale-honey)',
+                  border: `2px solid ${voice.isListening ? '#F5A623' : 'var(--color-pale-honey)'}`,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 150ms'
+                }}
+              >
+                {voice.isListening ? (
+                  <MicOff size={18} color="white" />
+                ) : (
+                  <Mic size={18} color="var(--color-espresso)" />
+                )}
+              </button>
+            )}
+          </div>
+          {quantityError && (
+            <p id="quantity-error" style={{
+              color: '#e53e3e',
+              fontSize: '0.8125rem',
+              marginTop: '0.375rem'
+            }} role="alert">
+              {quantityError}
+            </p>
+          )}
+          {voice.isListening && (
+            <p style={{
+              color: '#F5A623',
+              fontSize: '0.8125rem',
+              marginTop: '0.375rem'
+            }}>
+              🎤 Listening... say a number
+            </p>
+          )}
         </div>
 
         {/* Premium Support */}
