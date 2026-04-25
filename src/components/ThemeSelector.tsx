@@ -5,9 +5,16 @@ import type { ThemePackage } from '../types'
 interface ThemeSelectorProps {
   selectedThemeId: string | null
   onSelect: (theme: ThemePackage) => void
+  wishlist?: string[]
+  onToggleWishlist?: (themeId: string) => void
 }
 
-export default function ThemeSelector({ selectedThemeId, onSelect }: ThemeSelectorProps) {
+export default function ThemeSelector({ 
+  selectedThemeId, 
+  onSelect,
+  wishlist = [],
+  onToggleWishlist
+}: ThemeSelectorProps) {
   return (
     <section>
       <h2 style={{
@@ -29,6 +36,8 @@ export default function ThemeSelector({ selectedThemeId, onSelect }: ThemeSelect
             theme={theme}
             isSelected={selectedThemeId === theme.id}
             onSelect={() => onSelect(theme)}
+            isWishlisted={wishlist.includes(theme.id)}
+            onToggleWishlist={onToggleWishlist ? () => onToggleWishlist(theme.id) : undefined}
           />
         ))}
       </div>

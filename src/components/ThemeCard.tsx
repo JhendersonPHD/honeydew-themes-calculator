@@ -4,9 +4,22 @@ interface ThemeCardProps {
   theme: ThemePackage
   isSelected: boolean
   onSelect: () => void
+  isWishlisted?: boolean
+  onToggleWishlist?: () => void
 }
 
-export default function ThemeCard({ theme, isSelected, onSelect }: ThemeCardProps) {
+export default function ThemeCard({ 
+  theme, 
+  isSelected, 
+  onSelect,
+  isWishlisted = false,
+  onToggleWishlist
+}: ThemeCardProps) {
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onToggleWishlist?.()
+  }
+
   return (
     <button
       type="button"
@@ -39,6 +52,7 @@ export default function ThemeCard({ theme, isSelected, onSelect }: ThemeCardProp
         }
       }}
     >
+      {/* Selected checkmark */}
       {isSelected && (
         <div style={{
           position: 'absolute',
@@ -56,6 +70,46 @@ export default function ThemeCard({ theme, isSelected, onSelect }: ThemeCardProp
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
+      )}
+
+      {/* Wishlist heart */}
+      {onToggleWishlist && (
+        <button
+          type="button"
+          onClick={handleWishlistClick}
+          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          style={{
+            position: 'absolute',
+            top: '8px',
+            right: isSelected ? '40px' : '8px',
+            width: '28px',
+            height: '28px',
+            borderRadius: '50%',
+            background: 'white',
+            border: '1px solid var(--color-pale-honey)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            padding: 0,
+            transition: 'transform 150ms'
+          }}
+          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <svg 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill={isWishlisted ? 'var(--color-honey-gold)' : 'none'} 
+            stroke="var(--color-honey-gold)" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
       )}
 
       <div style={{

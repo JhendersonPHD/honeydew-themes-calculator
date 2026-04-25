@@ -9,6 +9,11 @@ import ThemeHelper from './components/ThemeHelper'
 import type { ThemePackage, ResultData } from './types'
 import { TAX_RATE } from './hooks/useCalculator'
 import { validateQuantity } from './utils/validation'
+import { useAIRecommendations } from './hooks/useAIRecommendations'
+import ThemeRecommendation from './components/ThemeRecommendation'
+import { useAnalytics } from './hooks/useAnalytics'
+import { useWishlist } from './hooks/useWishlist'
+import RecentlyViewed from './components/RecentlyViewed'
 
 const ResultCard = lazy(() => import('./components/ResultCard'))
 
@@ -19,6 +24,16 @@ export default function App() {
   const [premiumSupport, setPremiumSupport] = useState(false)
   const [prioritySetup, setPrioritySetup] = useState(false)
   const [result, setResult] = useState<ResultData | null>(null)
+
+  // S4.3 AI Recommendations
+  const aiRecommendations = useAIRecommendations({
+    quantity,
+    selectedThemeId: selectedTheme?.id ?? null
+  })
+
+  // S4.5 Analytics & Wishlist
+  const { trackEvent } = useAnalytics()
+  const { wishlist, toggleWishlist } = useWishlist()
 
   function handleQuantityChange(q: number) {
     setQuantity(q)
@@ -53,11 +68,16 @@ export default function App() {
       tax,
       total
     })
+    
+    // Track calculation event
+    trackEvent('Calculator', 'Calculate', `${selectedTheme.name} x${quantity}`)
   }
 
   function handleThemeSelect(theme: ThemePackage) {
     setSelectedTheme(theme)
     setResult(null)
+    // Track theme selection
+    trackEvent('Theme', 'Select', theme.name)
   }
 
   return (
@@ -75,8 +95,20 @@ export default function App() {
       <main id="main-content" className="main-content">
         <Hero />
 
+        {/* S4.5: Recently Viewed Themes */}
+        <RecentlyViewed />
+
         <ThemeSelector
           selectedThemeId={selectedTheme?.id ?? null}
+          onSelect={handleThemeSelect}
+          wishlist={wishlist}
+          onToggleWishlist={toggleWishlist}
+        />
+
+        {/* S4.3: AI Recommendations */}
+        <ThemeRecommendation
+          recommendations={aiRecommendations.recommendations}
+          category={aiRecommendations.category}
           onSelect={handleThemeSelect}
         />
 
