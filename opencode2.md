@@ -5,6 +5,8 @@
 **Phase**: S6 (Security & Logistics)
 **Verdict**: `***OpencodeDone***`
 
+**UPDATE 2026-04-25**: Security fix re-applied. The Vite 6.4.2 upgrade was lost during Jules-Merger commit `6fda24c`. Re-applied via `npm install vite@^6.4.2 --save-dev`. Build passes (Vite 6.4.2), audit shows 0 vulnerabilities.
+
 ---
 
 ## 1. Build & Type Check
