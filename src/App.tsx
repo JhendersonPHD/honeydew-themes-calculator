@@ -7,6 +7,7 @@ import Footer from './components/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
 import ThemeHelper from './components/ThemeHelper'
 import type { ThemePackage, ResultData } from './types'
+import { getDiscountTier } from './types'
 import { TAX_RATE } from './hooks/useCalculator'
 import { validateQuantity } from './utils/validation'
 import { useAIRecommendations } from './hooks/useAIRecommendations'
@@ -21,8 +22,6 @@ export default function App() {
   const [selectedTheme, setSelectedTheme] = useState<ThemePackage | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [quantityError, setQuantityError] = useState<string | null>(null)
-  const [premiumSupport, setPremiumSupport] = useState(false)
-  const [prioritySetup, setPrioritySetup] = useState(false)
   const [result, setResult] = useState<ResultData | null>(null)
 
   // S4.3 AI Recommendations
@@ -54,17 +53,21 @@ export default function App() {
     }
 
     const themeCost = selectedTheme.price * quantity
-    const addOnCost = (premiumSupport ? 9.99 : 0) + (prioritySetup ? 19.99 : 0)
-    const subtotal = themeCost + addOnCost
-    const tax = subtotal * TAX_RATE
-    const total = subtotal + tax
+    
+    // Apply discount tier based on quantity
+    const discountTier = getDiscountTier(quantity)
+    const discountAmount = themeCost * (discountTier.percent / 100)
+    const subtotalAfterDiscount = themeCost - discountAmount
+    
+    const tax = subtotalAfterDiscount * TAX_RATE
+    const total = subtotalAfterDiscount + tax
 
     setResult({
       theme: selectedTheme,
       quantity,
-      premiumSupport,
-      prioritySetup,
-      subtotal,
+      subtotal: themeCost,
+      discountPercent: discountTier.percent,
+      discountAmount,
       tax,
       total
     })
@@ -116,10 +119,6 @@ export default function App() {
           quantity={quantity}
           onQuantityChange={handleQuantityChange}
           quantityError={quantityError}
-          premiumSupport={premiumSupport}
-          onPremiumSupportChange={v => { setPremiumSupport(v); setResult(null) }}
-          prioritySetup={prioritySetup}
-          onPrioritySetupChange={v => { setPrioritySetup(v); setResult(null) }}
           onCalculate={handleCalculate}
           disabled={!selectedTheme}
         />

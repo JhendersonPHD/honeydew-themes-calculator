@@ -5,10 +5,6 @@ interface CalculatorProps {
   quantity: number
   onQuantityChange: (q: number) => void
   quantityError?: string | null
-  premiumSupport: boolean
-  onPremiumSupportChange: (v: boolean) => void
-  prioritySetup: boolean
-  onPrioritySetupChange: (v: boolean) => void
   onCalculate: () => void
   disabled: boolean
 }
@@ -17,10 +13,6 @@ export default function Calculator({
   quantity,
   onQuantityChange,
   quantityError,
-  premiumSupport,
-  onPremiumSupportChange,
-  prioritySetup,
-  onPrioritySetupChange,
   onCalculate,
   disabled
 }: CalculatorProps) {
@@ -152,93 +144,22 @@ export default function Calculator({
           )}
         </div>
 
-        {/* Premium Support */}
-        <label style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          cursor: 'pointer',
+        {/* Volume Discount Info */}
+        <div style={{
           padding: '0.875rem 1rem',
           borderRadius: '8px',
-          border: `2px solid ${premiumSupport ? 'var(--color-honey-gold)' : 'var(--color-pale-honey)'}`,
-          background: premiumSupport ? 'rgba(212,160,18,0.06)' : 'white',
-          transition: 'all 200ms ease-out'
+          border: '2px solid var(--color-pale-honey)',
+          background: 'rgba(245,166,35,0.08)',
+          fontSize: '0.875rem',
+          color: 'var(--color-espresso)'
         }}>
-          <input
-            type="checkbox"
-            checked={premiumSupport}
-            onChange={e => onPremiumSupportChange(e.target.checked)}
-            style={{
-              width: '20px',
-              height: '20px',
-              accentColor: 'var(--color-honey-gold)',
-              cursor: 'pointer'
-            }}
-          />
-          <div>
-            <span style={{ fontWeight: 600, color: 'var(--color-espresso)' }}>
-              Premium Support
-            </span>
-            <span style={{
-              marginLeft: '0.5rem',
-              fontWeight: 700,
-              color: 'var(--color-honey-gold)'
-            }}>
-              +$9.99/mo
-            </span>
-            <p style={{
-              margin: '0.125rem 0 0',
-              fontSize: '0.8125rem',
-              color: 'var(--color-warm-gray)'
-            }}>
-              Priority access to our support team
-            </p>
-          </div>
-        </label>
-
-        {/* Priority Setup */}
-        <label style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          cursor: 'pointer',
-          padding: '0.875rem 1rem',
-          borderRadius: '8px',
-          border: `2px solid ${prioritySetup ? 'var(--color-honey-gold)' : 'var(--color-pale-honey)'}`,
-          background: prioritySetup ? 'rgba(212,160,18,0.06)' : 'white',
-          transition: 'all 200ms ease-out'
-        }}>
-          <input
-            type="checkbox"
-            checked={prioritySetup}
-            onChange={e => onPrioritySetupChange(e.target.checked)}
-            style={{
-              width: '20px',
-              height: '20px',
-              accentColor: 'var(--color-honey-gold)',
-              cursor: 'pointer'
-            }}
-          />
-          <div>
-            <span style={{ fontWeight: 600, color: 'var(--color-espresso)' }}>
-              Priority Setup
-            </span>
-            <span style={{
-              marginLeft: '0.5rem',
-              fontWeight: 700,
-              color: 'var(--color-honey-gold)'
-            }}>
-              +$19.99
-            </span>
-            <p style={{
-              margin: '0.125rem 0 0',
-              fontSize: '0.8125rem',
-              color: 'var(--color-warm-gray)'
-            }}>
-              Fast-track installation and configuration
-            </p>
-          </div>
-        </label>
+          <strong style={{ color: 'var(--color-honey-gold)' }}>Volume Discounts:</strong>
+          <ul style={{ margin: '0.5rem 0 0 1.25rem', padding: 0 }}>
+            <li>5-9 units: <strong>10% off</strong></li>
+            <li>10-24 units: <strong>15% off</strong></li>
+            <li>25+ units: <strong>20% off</strong></li>
+          </ul>
+        </div>
 
         {/* Calculate Button */}
         <button

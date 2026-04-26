@@ -12,28 +12,28 @@ export const THEMES: ThemePackage[] = [
     id: 'zen-garden',
     name: 'Zen Garden',
     description: 'Honey + lavender calm retreat',
-    price: 39.99,
+    price: 34.99,
     emoji: '🏡'
   },
   {
-    id: 'golden-harvest',
-    name: 'Golden Harvest',
-    description: 'Honey + autumn warmth bundle',
-    price: 49.99,
-    emoji: '🍂'
+    id: 'power-boost',
+    name: 'Power Boost',
+    description: 'Honey + ginger + turmeric energy bundle',
+    price: 39.99,
+    emoji: '⚡'
   },
   {
-    id: 'wildflower-retreat',
-    name: 'Wildflower Retreat',
-    description: 'Honey + wildflower meadow escape',
-    price: 34.99,
-    emoji: '🌼'
-  },
-  {
-    id: 'sunlit-meadow',
-    name: 'Sunlit Meadow',
-    description: 'Honey + sunflower brightness',
+    id: 'sleep-well',
+    name: 'Sleep Well',
+    description: 'Honey + chamomile restful sleep',
     price: 27.99,
-    emoji: '🌻'
+    emoji: '🌙'
+  },
+  {
+    id: 'immunity-shield',
+    name: 'Immunity Shield',
+    description: 'Honey + elderberry + vitamin C wellness',
+    price: 44.99,
+    emoji: '🛡️'
   }
 ]
